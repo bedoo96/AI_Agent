@@ -20,21 +20,13 @@ class LLMModel:
         self.chain = LLMChain(llm=self.llm, prompt=self.prompt, memory=self.memory)
 
     def get_response(self, user_input):
-        # Access messages from the memory object
         chat_history = self.memory.load_memory_variables({})['history']
         
-        # Combine chat history and user input into a single string
         full_conversation = "\n".join(chat_history) + f"\nUser: {user_input}"
-        
-        # Prepare the input dictionary for the prompt
         input_data = {
             "full_conversation": full_conversation,
         }
-        
-        # Use the LLMChain to generate a response
         response = self.chain.invoke(input_data)
-
-        # Extract the assistant's response content
-        assistant_response = response['text']  # Assuming 'text' contains the assistant's reply
+        assistant_response = response['text']  
         
         return assistant_response  # Return only the content of the response
